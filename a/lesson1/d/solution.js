@@ -34,7 +34,6 @@ const initPersons = () => {
 
   for (const param of params) {
     const [p1, p2] = strToArray(param).map(Number);
-    // [persons[p1], persons[p2]] = [p[p2], p1];
     swap(p1, p2, false);
   }
 };
@@ -47,19 +46,23 @@ const swap = (p1, p2, print = true) => {
   }
 };
 
-const reSwap = (p1, p2) => {
-  swap(p1, n - 1);
-  swap(p2, n);
-  swap(p1, n);
-  swap(p2, n - 1);
+const tmp = i => {
+  swap(i, n - 1);
+
+  while (persons[persons[n - 1]] !== i) {
+    swap(n - 1, persons[n - 1]);
+  }
+
+  swap(persons[n - 1], n);
+  swap(i, n);
+  swap(n - 1, persons[n - 1]);
 };
 
 const restorePersons = () => {
   for (let i = 1; i < n - 1; i++) {
-    if (persons[i] === i) continue;
+    if (i === persons[i]) continue;
 
-    const position = persons.indexOf(i);
-    reSwap(position, i);
+    tmp(i);
   }
 
   if (persons[n] !== n) {
@@ -70,5 +73,4 @@ const restorePersons = () => {
 const main = () => {
   initPersons();
   restorePersons();
-  console.log(persons);
 };
